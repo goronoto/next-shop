@@ -1,0 +1,16 @@
+{
+    // Вмикає форматування при збереженні для всіх файлів
+    "editor.formatOnSave": true,
+
+    // Встановлює Prettier як форматувальник ЗА ЗАМОВЧУВАННЯМ для всіх мов
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+
+    // Явно вказуємо форматувальник для TSX, щоб уникнути конфліктів
+    "[typescriptreact]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    // Також для звичайного TypeScript
+    "[typescript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    }
+}

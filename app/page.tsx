@@ -1,95 +1,65 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+import { getCategories, getProducts } from '@/shared/actions/index';
+import {
+    Container,
+    ProductGroupe,
+    Title,
+    SocialMedia,
+    RecommendedProduct,
+    CategoriesList,
+    ColumLinks,
+} from '@/shared/components/shared';
+import { LINK_COLUMN } from '@/shared/constants/site-links';
+import { cn } from '@/shared/lib/utils';
+import React from 'react';
 
-export default function Home() {
-  return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol>
-          <li>
-            Get started by editing <code>app/page.tsx</code>.
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+export default async function HomePage() {
+    const [categories, productsFromDB] = await Promise.all([
+        getCategories(),
+        getProducts(),
+    ]);
 
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            Read our docs
-          </a>
+    const safeProducts = productsFromDB.map((product) => ({
+        ...product,
+        price: product.price.toString(),
+    }));
+
+    return (
+        <div className={cn('')}>
+            <Container className="flex items-start">
+                {/*SIDEBAR*/}
+                <div className="sticky top-20 flex-col border-b-2 border-gray-300">
+                    <CategoriesList categories={categories} />
+                    <SocialMedia />
+                    <div className="p-4">
+                        {LINK_COLUMN.map((column) => (
+                            <ColumLinks
+                                isSideBar={true}
+                                className=""
+                                key={column.title}
+                                column={{
+                                    title: column.title,
+                                    links: column.links,
+                                }}
+                            ></ColumLinks>
+                        ))}
+                    </div>
+                </div>
+                {/*PRODUCTS*/}
+                <div className="flex-1 overflow-hidden border-l-2 border-gray-300 pl-10">
+                    <Title
+                        className="mb-5 mt-10"
+                        text={'Recommended base on you searching'}
+                        size="md"
+                    />
+                    <RecommendedProduct
+                        className="mb-10"
+                        isRecommended={true}
+                        products={safeProducts}
+                    />
+                    <Title text="More Products" size="md" />
+                    <ProductGroupe products={safeProducts} />
+                </div>
+            </Container>
         </div>
-      </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
-  );
+    );
 }

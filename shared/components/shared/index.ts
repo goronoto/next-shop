@@ -1,0 +1,17 @@
+export { Container } from './container';
+export { Header } from './header';
+export { SearchInput } from './search-input';
+export { HeaderIcons } from './header-icons';
+export { Catalog } from './catalog';
+export { Footer } from './footer';
+export { Title } from './title';
+export { ProductCard } from './product-card';
+export { ProductGroupe } from './product-groupe';
+export { SocialMedia } from './social-media';
+export { RecommendedProduct } from './recomended-products';
+export { CategoriesList } from './categories-list';
+export { ColumLinks } from './colum-links';
+export { ScrollToTopBtn } from './scrol-to-top-btn';
+export { ProductDetails } from './product-details';
+export { CatalogContent } from './catalog-modal';
+export { CategoryHeader } from './category-header';
