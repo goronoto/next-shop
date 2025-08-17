@@ -4,9 +4,10 @@ import { cn } from '@/shared/lib/utils';
 import Link from 'next/link';
 import { SafeProduct, SafeProducts } from '@/shared/types/safe-products-type';
 import { Button } from '../ui';
+import { AddToCartBtn } from './add-to-cart-btn';
 
 interface ProductCardProps {
-    product: SafeProducts | SafeProduct;
+    product: SafeProduct;
     className?: string;
     isRecommended?: boolean;
 }
@@ -20,9 +21,6 @@ export const ProductCard: React.FC<ProductCardProps> = ({
     const rating = 4.5;
 
     return (
-        // 1. Загальний контейнер картки. `h-full` та `flex-col` є ключовими,
-        // щоб картка займала всю висоту батьківського flex-контейнера
-        // і її внутрішні елементи можна було гнучко розташовувати по вертикалі.
         <div
             className={cn(
                 'group relative z-10 flex h-full w-[230px] flex-col overflow-hidden rounded-lg border bg-white shadow-sm transition-shadow duration-300 hover:shadow-lg',
@@ -36,12 +34,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                         src={imageUrl}
                         alt={name}
                         fill
-                        className="object-cover transition-transform duration-300 group-hover:scale-105"
+                        className="object-contain transition-transform duration-300 group-hover:scale-105"
                     />
                 </Link>
                 {isRecommended ? (
                     <span className="absolute left-2 top-2 rounded-full bg-rozetka-green px-2 py-1 text-xs text-white">
-                        {category.name}
+                        {category?.name}
                     </span>
                 ) : (
                     ''
@@ -94,9 +92,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                     <p className="text-xl font-bold text-green-500">
                         {parseFloat(price).toLocaleString('uk-UA')} грн
                     </p>
-                    <Button size="icon" variant="outline" className="shrink-0">
-                        <ShoppingCart className="h-5 w-5" />
-                    </Button>
+                    <AddToCartBtn product={product} />
                 </div>
             </div>
         </div>

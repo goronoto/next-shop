@@ -1,4 +1,5 @@
 import { prisma } from '../lib/prisma';
+import { SafeProduct } from '../types/safe-products-type';
 
 export const getProducts = async () => {
     try {
@@ -10,7 +11,15 @@ export const getProducts = async () => {
                 category: true,
             },
         });
-        return products;
+        const safeProducts: SafeProduct[] = products.map((product) => ({
+            ...product,
+            category: product.category,
+            price: product.price.toString(),
+            createdAt: product.createdAt.toISOString(),
+            updatedAt: product.updatedAt.toISOString(),
+        }));
+
+        return safeProducts;
     } catch (error) {
         console.log('Failed to get products');
         return [];

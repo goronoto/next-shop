@@ -2,8 +2,8 @@ import { getProductById } from '@/shared/actions';
 import { notFound } from 'next/navigation';
 import { SafeProduct } from '../types/safe-products-type';
 
-export const fetchProduct = async (id: string): Promise<SafeProduct> => {
-    const productId = parseInt(id, 10);
+export const fetchProduct = async (id: number): Promise<SafeProduct> => {
+    const productId = id;
 
     if (isNaN(productId)) {
         notFound();

@@ -2,6 +2,7 @@
 import Image from 'next/image';
 import React from 'react';
 import {
+    CartSheet,
     Catalog,
     CatalogContent,
     Container,
@@ -65,7 +66,9 @@ export const Header: React.FC<Props> = ({ className }) => {
                 {/*SEARCH BAR*/}
                 <SearchInput />
 
-                {/*ICONS*/}
+                <CartSheet />
+
+                {/*USER ICONS*/}
                 <HeaderIcons />
             </Container>
         </header>

@@ -15,9 +15,6 @@ export const getCategoryPageData = async (
             where: { slug },
             include: {
                 products: {
-                    include: {
-                        category: true,
-                    },
                     orderBy: {
                         createdAt: 'desc',
                     },

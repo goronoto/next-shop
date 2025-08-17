@@ -15,3 +15,6 @@ export { ScrollToTopBtn } from './scrol-to-top-btn';
 export { ProductDetails } from './product-details';
 export { CatalogContent } from './catalog-modal';
 export { CategoryHeader } from './category-header';
+export { AddToCartBtn } from './add-to-cart-btn';
+export { CartSheet } from './cart-sheet';
+export { CARTitem } from './cart-item';

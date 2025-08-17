@@ -6,6 +6,7 @@ import {
 import { GeistSans } from 'geist/font/sans';
 import { GeistMono } from 'geist/font/mono';
 import './globals.css';
+import { Toaster } from 'react-hot-toast';
 
 export default function RootLayout({
     children,
@@ -18,6 +19,7 @@ export default function RootLayout({
             className={`${GeistSans.variable} ${GeistMono.variable}`}
         >
             <body>
+                <Toaster />
                 <Header />
                 <main>{children}</main>
                 <Footer />

@@ -3,13 +3,13 @@
 import useEmblaCarousel from 'embla-carousel-react';
 import React from 'react';
 import { ProductCard } from './product-card';
-import { SafeProducts } from '@/shared/types/safe-products-type';
+import { SafeProduct, SafeProducts } from '@/shared/types/safe-products-type';
 import { Carousel } from '../ui';
 import { CarouselContent, CarouselItem } from '../ui/carousel';
 import { cn } from '@/shared/lib/utils';
 
 interface SliderProps {
-    products: SafeProducts[];
+    products: SafeProduct[];
     isRecommended?: boolean;
     className?: string;
 }

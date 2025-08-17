@@ -13,15 +13,10 @@ import { cn } from '@/shared/lib/utils';
 import React from 'react';
 
 export default async function HomePage() {
-    const [categories, productsFromDB] = await Promise.all([
+    const [categories, products] = await Promise.all([
         getCategories(),
         getProducts(),
     ]);
-
-    const safeProducts = productsFromDB.map((product) => ({
-        ...product,
-        price: product.price.toString(),
-    }));
 
     return (
         <div className={cn('')}>
@@ -54,10 +49,10 @@ export default async function HomePage() {
                     <RecommendedProduct
                         className="mb-10"
                         isRecommended={true}
-                        products={safeProducts}
+                        products={products}
                     />
                     <Title text="More Products" size="md" />
-                    <ProductGroupe products={safeProducts} />
+                    <ProductGroupe products={products} />
                 </div>
             </Container>
         </div>

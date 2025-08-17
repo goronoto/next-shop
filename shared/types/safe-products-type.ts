@@ -1,18 +1,18 @@
-import type { Prisma } from '@prisma/client';
+import type { Category, Product } from '@prisma/client';
 
-export type ProductWithCategory = Prisma.ProductGetPayload<{
-    include: { category: true };
-}>;
-
+export type ProductWithCategory = Product & {
+    category: Category;
+};
 export type SafeProducts = Omit<ProductWithCategory, 'price'> & {
     price: string;
 };
 
-export type SafeProduct = Omit<
-    ProductWithCategory,
-    'price' | 'createdAt' | 'updatedAt'
-> & {
+type BaseSafeProduct = Omit<Product, 'price' | 'createdAt' | 'updatedAt'> & {
     price: string;
     createdAt: string;
     updatedAt: string;
+};
+
+export type SafeProduct = BaseSafeProduct & {
+    category?: Category;
 };

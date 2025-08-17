@@ -4,7 +4,7 @@ import React from 'react';
 import { ProductCard } from './product-card';
 
 interface Props {
-    products: SafeProducts[] | SafeProduct[];
+    products: SafeProduct[];
     className?: string;
 }
 

@@ -6,6 +6,7 @@ import { Title } from './title';
 import { Button } from '../ui';
 import { ShoppingCart } from 'lucide-react';
 import { Container } from './container';
+import { AddToCartBtn } from './add-to-cart-btn';
 
 interface Props {
     className?: string;
@@ -16,7 +17,7 @@ export const ProductDetails: React.FC<Props> = ({ product, className }) => {
     return (
         <div className={cn('py-10', className)}>
             <Container className="flex flex-col gap-2 md:flex-row">
-                <div className="relative aspect-square w-full overflow-hidden rounded-lg bg-white p-4 md:w-1/2">
+                <div className="relative w-full overflow-hidden rounded-lg bg-white object-contain p-6 md:w-1/2">
                     <Image src={product.imageUrl} alt={product.name} fill />
                 </div>
                 <div className="flex flex-1 flex-col gap-2">
@@ -31,13 +32,7 @@ export const ProductDetails: React.FC<Props> = ({ product, className }) => {
                             {parseFloat(product.price).toLocaleString('uk-UA')}{' '}
                             грн
                         </p>
-                        <Button
-                            size="lg"
-                            className="mt-2 w-full bg-rozetka-green"
-                        >
-                            <ShoppingCart className="mr-2 h-7 w-7" />
-                            <span>Купити</span>
-                        </Button>
+                        <AddToCartBtn product={product} isFullPage={true} />
                     </div>
                 </div>
             </Container>
