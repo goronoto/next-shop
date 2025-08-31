@@ -22,7 +22,7 @@ export default async function HomePage() {
         <div className={cn('')}>
             <Container className="flex items-start">
                 {/*SIDEBAR*/}
-                <div className="sticky top-20 flex-col border-b-2 border-gray-300">
+                <div className="flex-col border-b-2 border-gray-300">
                     <CategoriesList categories={categories} />
                     <SocialMedia />
                     <div className="p-4">

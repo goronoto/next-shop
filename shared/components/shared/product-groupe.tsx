@@ -12,7 +12,7 @@ export const ProductGroupe: React.FC<Props> = ({ products, className }) => {
     return (
         <div
             className={cn(
-                'mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4',
+                'mx-auto mt-4 grid grid-cols-1 place-items-center gap-4 sm:grid-cols-2 lg:grid-cols-4',
                 className
             )}
         >

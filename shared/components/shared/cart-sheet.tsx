@@ -30,7 +30,7 @@ export const CartSheet: React.FC<Props> = ({}) => {
 
                 {items.length > 0 && (
                     <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs">
-                        {items.reduce((sum, item) => sum + item.quantity, 0)}
+                        {items.length}
                     </span>
                 )}
             </SheetTrigger>

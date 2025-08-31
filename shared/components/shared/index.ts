@@ -18,3 +18,6 @@ export { CategoryHeader } from './category-header';
 export { AddToCartBtn } from './add-to-cart-btn';
 export { CartSheet } from './cart-sheet';
 export { CARTitem } from './cart-item';
+export { RegisterForm } from './register-form';
+export { LoginForm } from './login-form';
+export { UserNav } from './user-nav';

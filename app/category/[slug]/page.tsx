@@ -30,7 +30,9 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
 
             <hr className="mt-8" />
 
-            <ProductGroupe products={products} />
+            <div className="items-center justify-center">
+                <ProductGroupe products={products} />
+            </div>
         </Container>
     );
 }

@@ -10,7 +10,7 @@ interface Props {
 
 export const Footer: React.FC<Props> = ({ className }) => {
     return (
-        <div className={cn('w-full', className)}>
+        <div className={cn('mt-5 w-full', className)}>
             <div className="h-[5px] bg-rozetka-green">
                 <Container className="pt-10">
                     <div className="flex items-center justify-between">

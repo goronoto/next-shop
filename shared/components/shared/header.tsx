@@ -6,8 +6,8 @@ import {
     Catalog,
     CatalogContent,
     Container,
-    HeaderIcons,
     SearchInput,
+    UserNav,
 } from './index';
 import Link from 'next/link';
 import { cn } from '@/shared/lib/utils';
@@ -66,10 +66,9 @@ export const Header: React.FC<Props> = ({ className }) => {
                 {/*SEARCH BAR*/}
                 <SearchInput />
 
-                <CartSheet />
-
                 {/*USER ICONS*/}
-                <HeaderIcons />
+                <CartSheet />
+                <UserNav />
             </Container>
         </header>
     );
