@@ -11,16 +11,15 @@ interface Props {
     item: cartItem;
 }
 
-const selectRemoveItem = (state: ReturnType<typeof useCartStore.getState>) =>
-    state.removeItem;
-
 const selectUpdateQuantity = (
     state: ReturnType<typeof useCartStore.getState>
 ) => state.updateQuantity;
+const selectRemoveItem = (state: ReturnType<typeof useCartStore.getState>) =>
+    state.removeItem;
 
 export const CARTitem: React.FC<Props> = ({ className, item }) => {
-    const removeItem = useCartStore(selectRemoveItem);
     const updateQuantity = useCartStore(selectUpdateQuantity);
+    const removeItem = useCartStore(selectRemoveItem);
 
     const itemPrice = parseFloat(item.product.price);
     const totalPrice = itemPrice * item.quantity;

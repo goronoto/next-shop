@@ -4,19 +4,19 @@ import { useCartStore } from '@/shared/store/cart-store';
 import { useSession } from 'next-auth/react';
 import React from 'react';
 
+const selectedPersistedUserId = (
+    state: ReturnType<typeof useCartStore.getState>
+) => state.userId;
+const selectedSetUserId = (state: ReturnType<typeof useCartStore.getState>) =>
+    state.setUserId;
+const selectedClearCart = (state: ReturnType<typeof useCartStore.getState>) =>
+    state.clearCart;
+
 export const CartSessionManager = () => {
-    const selectState = React.useCallback(
-        (state: ReturnType<typeof useCartStore.getState>) => {
-            return {
-                persistedUserId: state.userId,
-                setUserId: state.setUserId,
-                clearCart: state.clearCart,
-            };
-        },
-        []
-    );
     const { data: session, status } = useSession();
-    const { persistedUserId, setUserId, clearCart } = useCartStore(selectState);
+    const persistedUserId = useCartStore(selectedPersistedUserId);
+    const setUserId = useCartStore(selectedSetUserId);
+    const clearCart = useCartStore(selectedClearCart);
 
     React.useEffect(() => {
         if (status === 'loading') {
