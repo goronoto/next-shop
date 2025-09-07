@@ -10,7 +10,7 @@ export type cartItem = {
 
 type CartState = {
     items: cartItem[];
-    _hasHydrated: boolean;
+    userId: string | null;
 };
 
 type CartActions = {
@@ -18,14 +18,14 @@ type CartActions = {
     removeItem: (productId: number) => void;
     updateQuantity: (productId: number, quantity: number) => void;
     clearCart: () => void;
-    initializeCartForUser: (userId: string | null | undefined) => void;
+    setUserId: (userId: string | null) => void;
 };
 
 export const useCartStore = create<CartState & CartActions>()(
     persist(
         (set, get) => ({
             items: [],
-            _hasHydrated: false,
+            userId: null,
 
             addItem: (product) => {
                 const currentItems = get().items;
@@ -72,19 +72,7 @@ export const useCartStore = create<CartState & CartActions>()(
                 set({ items: [] });
             },
 
-            initializeCartForUser: (userId) => {
-                const newStorageKey = userId
-                    ? `cart-storage-${userId}`
-                    : 'cart-storage-guest';
-
-                const persistAPI = (get() as any).persist;
-
-                persistAPI.setOptions({
-                    name: newStorageKey,
-                });
-
-                persistAPI.rehydrate();
-            },
+            setUserId: (userId) => set({ userId }),
         }),
         {
             name: 'cart-storage-guest',
@@ -92,22 +80,8 @@ export const useCartStore = create<CartState & CartActions>()(
 
             partialize: (state) => ({
                 items: state.items,
+                userId: state.userId,
             }),
-
-            onRehydrateStorage: () => {
-                return (state, error) => {
-                    if (error) {
-                        console.error(
-                            'An error happened during hydration',
-                            error
-                        );
-                    } else {
-                        setTimeout(() => {
-                            useCartStore.setState({ _hasHydrated: true });
-                        }, 0);
-                    }
-                };
-            },
         }
     )
 );

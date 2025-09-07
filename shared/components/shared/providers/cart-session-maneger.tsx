@@ -2,34 +2,36 @@
 
 import { useCartStore } from '@/shared/store/cart-store';
 import { useSession } from 'next-auth/react';
-import React, { FC, useRef } from 'react';
+import React from 'react';
 
 export const CartSessionManager = () => {
-    const { data: session, status } = useSession();
-    const userId = session?.user.id;
-    const initializeCartForUser = useCartStore(
-        (state) => state.initializeCartForUser
+    const selectState = React.useCallback(
+        (state: ReturnType<typeof useCartStore.getState>) => {
+            return {
+                persistedUserId: state.userId,
+                setUserId: state.setUserId,
+                clearCart: state.clearCart,
+            };
+        },
+        []
     );
-    const _hasHydrated = useCartStore((state) => state._hasHydrated);
+    const { data: session, status } = useSession();
+    const { persistedUserId, setUserId, clearCart } = useCartStore(selectState);
 
     React.useEffect(() => {
-        if (!_hasHydrated) {
+        if (status === 'loading') {
             return;
         }
-        console.log('Session status', status);
 
-        if (status === 'authenticated') {
-            console.log(`User is registered ID:${userId}`);
+        const currentUserId = session?.user?.id ?? null;
 
-            initializeCartForUser(userId);
+        if (persistedUserId !== currentUserId) {
+            console.log('User changed. Clearing cart.');
+            clearCart();
         }
 
-        if (status === 'unauthenticated') {
-            console.log('User is not registered (guest)');
-
-            initializeCartForUser(null);
-        }
-    }, [status, userId, initializeCartForUser, _hasHydrated]);
+        setUserId(currentUserId);
+    }, [status, session?.user?.id, persistedUserId, setUserId, clearCart]);
 
     return null;
 };

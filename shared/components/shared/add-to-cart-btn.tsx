@@ -13,12 +13,15 @@ interface Props {
     isFullPage?: boolean;
 }
 
+const selectAddItem = (state: ReturnType<typeof useCartStore.getState>) =>
+    state.addItem;
+
 export const AddToCartBtn: React.FC<Props> = ({
     className,
     product,
     isFullPage = false,
 }) => {
-    const { addItem } = useCartStore();
+    const addItem = useCartStore(selectAddItem);
 
     const handleAddItem = () => {
         addItem(product);

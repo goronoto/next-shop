@@ -16,8 +16,14 @@ import { CARTitem } from './cart-item';
 
 interface Props {}
 
+const selectItems = (state: ReturnType<typeof useCartStore.getState>) =>
+    state.items;
+const selectClearCart = (state: ReturnType<typeof useCartStore.getState>) =>
+    state.clearCart;
+
 export const CartSheet: React.FC<Props> = ({}) => {
-    const { items, clearCart } = useCartStore();
+    const items = useCartStore(selectItems);
+    const clearCart = useCartStore(selectClearCart);
 
     const totalPrice = items.reduce((sum, item) => {
         const itemCost = parseFloat(item.product.price) * item.quantity;
