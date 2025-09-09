@@ -1,7 +1,6 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import { SafeProduct } from '../types/safe-products-type';
-import { boolean } from 'zod';
 
 export type cartItem = {
     product: SafeProduct;
