@@ -1,26 +1,29 @@
 'use client';
 import { cn } from '@/shared/lib/utils';
-import { cartItem, useCartStore } from '@/shared/store/cart-store';
+import { cartItem } from '@/shared/store/cart-store';
 import Image from 'next/image';
 import React from 'react';
 import { Button } from '../ui';
 import { ImageIcon, Trash2 } from 'lucide-react';
+import { CartItem } from '@prisma/client';
 
 interface Props {
     className?: string;
     item: cartItem;
+    handleUpdateQuantity: (cartItemId: string, quantity: number) => void;
+    handleDeleteCartItem: (cartItemId: string) => void;
+    isLoading: boolean;
+    cartItemId: CartItem['id'];
 }
 
-const selectUpdateQuantity = (
-    state: ReturnType<typeof useCartStore.getState>
-) => state.updateQuantity;
-const selectRemoveItem = (state: ReturnType<typeof useCartStore.getState>) =>
-    state.removeItem;
-
-export const CARTitem: React.FC<Props> = ({ className, item }) => {
-    const updateQuantity = useCartStore(selectUpdateQuantity);
-    const removeItem = useCartStore(selectRemoveItem);
-
+export const CARTitem: React.FC<Props> = ({
+    className,
+    item,
+    handleUpdateQuantity,
+    handleDeleteCartItem,
+    isLoading,
+    cartItemId,
+}) => {
     const itemPrice = parseFloat(item.product.price);
     const totalPrice = itemPrice * item.quantity;
 
@@ -52,12 +55,13 @@ export const CARTitem: React.FC<Props> = ({ className, item }) => {
 
                     <div className="flex items-center gap-2">
                         <Button
+                            disabled={isLoading}
                             size="icon"
                             className="h-7 w-7"
                             variant={'outline'}
                             onClick={() =>
-                                updateQuantity(
-                                    item.product.id,
+                                handleUpdateQuantity(
+                                    cartItemId,
                                     item.quantity - 1
                                 )
                             }
@@ -68,12 +72,13 @@ export const CARTitem: React.FC<Props> = ({ className, item }) => {
                             {item.quantity}
                         </p>
                         <Button
+                            disabled={isLoading}
                             size="icon"
                             className="h-7 w-7"
                             variant={'outline'}
                             onClick={() =>
-                                updateQuantity(
-                                    item.product.id,
+                                handleUpdateQuantity(
+                                    cartItemId,
                                     item.quantity + 1
                                 )
                             }
@@ -81,10 +86,11 @@ export const CARTitem: React.FC<Props> = ({ className, item }) => {
                             +
                         </Button>
                         <Button
+                            disabled={isLoading}
                             variant="ghost"
                             size="icon"
                             className="h-7 w-7 text-gray-500 hover:text-red-500"
-                            onClick={() => removeItem(item.product.id)}
+                            onClick={() => handleDeleteCartItem(cartItemId)}
                         >
                             <Trash2 size={16} />
                         </Button>

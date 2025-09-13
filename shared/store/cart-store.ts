@@ -5,17 +5,21 @@ import { SafeProduct } from '../types/safe-products-type';
 export type cartItem = {
     product: SafeProduct;
     quantity: number;
+    cartItemId: string;
 };
 
 type CartState = {
     items: cartItem[];
     userId: string | null;
+    isLoading: boolean;
 };
 
 type CartActions = {
+    setIsLoading: (isLoading: boolean) => void;
     addItem: (product: SafeProduct) => void;
-    removeItem: (productId: number) => void;
-    updateQuantity: (productId: number, quantity: number) => void;
+    setItems: (items: cartItem[]) => void;
+    removeItem: (cartItemId: string) => void;
+    updateQuantity: (cartItemId: string, quantity: number) => void;
     clearCart: () => void;
     setUserId: (userId: string | null) => void;
 };
@@ -25,6 +29,9 @@ export const useCartStore = create<CartState & CartActions>()(
         (set, get) => ({
             items: [],
             userId: null,
+            isLoading: false,
+
+            setIsLoading: (isLoading: boolean) => set({ isLoading }),
 
             addItem: (product) => {
                 const currentItems = get().items;
@@ -41,25 +48,36 @@ export const useCartStore = create<CartState & CartActions>()(
                         ),
                     });
                 } else {
-                    set({ items: [...currentItems, { product, quantity: 1 }] });
+                    set({
+                        items: [
+                            ...currentItems,
+                            {
+                                product,
+                                quantity: 1,
+                                cartItemId: crypto.randomUUID(),
+                            },
+                        ],
+                    });
                 }
             },
 
-            removeItem: (productId) => {
+            setItems: (items) => set({ items }),
+
+            removeItem: (cartItemId) => {
                 set({
                     items: get().items.filter(
-                        (item) => item.product.id !== productId
+                        (item) => item.cartItemId !== cartItemId
                     ),
                 });
             },
 
-            updateQuantity: (productId, quantity) => {
+            updateQuantity: (cartItemId, quantity) => {
                 if (quantity <= 0) {
-                    get().removeItem(productId);
+                    get().removeItem(cartItemId);
                 } else {
                     set({
                         items: get().items.map((item) =>
-                            item.product.id === productId
+                            item.cartItemId === cartItemId
                                 ? { ...item, quantity }
                                 : item
                         ),

@@ -112,32 +112,37 @@ export const RegisterForm = () => {
                 <Button type="submit" disabled={isPending} className="w-full">
                     {isPending ? 'Creating...' : 'Create new account'}
                 </Button>
-
-                <Link href="/login">
-                    <Button disabled={isPending} className="mt-5 w-full">
-                        Already have an account?
-                    </Button>
-                </Link>
-
-                <div className="relative my-4">
-                    <div className="absolute inset-0 flex items-center">
-                        <span className="w-full border-t" />
-                    </div>
-                    <div className="relative flex justify-center text-xs uppercase">
-                        <span className="bg-background px-2 text-muted-foreground">
-                            Or continue with
-                        </span>
-                    </div>
-                </div>
-
-                <Button
-                    variant="outline"
-                    className="w-full"
-                    onClick={() => signIn('google')}
-                >
-                    Google
-                </Button>
             </form>
+
+            <Link href="/login">
+                <Button
+                    type="button"
+                    disabled={isPending}
+                    className="mt-5 w-full"
+                >
+                    Already have an account?
+                </Button>
+            </Link>
+
+            <div className="relative my-4">
+                <div className="absolute inset-0 flex items-center">
+                    <span className="w-full border-t" />
+                </div>
+                <div className="relative flex justify-center text-xs uppercase">
+                    <span className="bg-background px-2 text-muted-foreground">
+                        Or continue with
+                    </span>
+                </div>
+            </div>
+
+            <Button
+                type="button"
+                variant="outline"
+                className="w-full"
+                onClick={() => signIn('google')}
+            >
+                Google
+            </Button>
         </Form>
     );
 };

@@ -6,6 +6,7 @@ import { Button } from '../ui';
 import { useCartStore } from '@/shared/store/cart-store';
 import { ShoppingCart } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { addToCart } from '@/shared/actions/cart-actions';
 
 interface Props {
     className?: string;
@@ -16,30 +17,64 @@ interface Props {
 const selectAddItem = (state: ReturnType<typeof useCartStore.getState>) =>
     state.addItem;
 
+const selectUserId = (state: ReturnType<typeof useCartStore.getState>) =>
+    state.userId;
+
+const selectSetItems = (state: ReturnType<typeof useCartStore.getState>) =>
+    state.setItems;
+
 export const AddToCartBtn: React.FC<Props> = ({
     className,
     product,
     isFullPage = false,
 }) => {
     const addItem = useCartStore(selectAddItem);
+    const userId = useCartStore(selectUserId);
+    const setItems = useCartStore(selectSetItems);
+    const [isAdding, setIsAdding] = React.useState(false);
 
-    const handleAddItem = () => {
-        addItem(product);
-        console.log(`${product.name} has been added to the cart`);
-        toast.success('product added to cart');
-    };
+    async function handleAddToCart(product: SafeProduct) {
+        setIsAdding(true);
+
+        if (userId) {
+            const updatedCart = await addToCart(product.id);
+
+            const newItem =
+                updatedCart?.items.map((item) => ({
+                    product: {
+                        ...item.product,
+                        price: item.product.price.toString(),
+                        createdAt: item.product.createdAt.toISOString(),
+                        updatedAt: item.product.updatedAt.toISOString(),
+                    },
+                    quantity: item.quantity,
+                    cartItemId: item.id,
+                })) ?? [];
+
+            setItems(newItem);
+            toast.success('product added to cart');
+        } else {
+            addItem(product);
+            toast.success('product added to cart');
+        }
+
+        setIsAdding(false);
+    }
+
     return isFullPage ? (
         <Button
-            onClick={handleAddItem}
+            disabled={isAdding}
+            onClick={() => handleAddToCart(product)}
             size="lg"
             className="mt-2 w-full bg-rozetka-green"
         >
             <ShoppingCart className="mr-2 h-7 w-7" />
-            <span>Купити</span>
+            <span>Buy</span>
         </Button>
     ) : (
         <Button
-            onClick={handleAddItem}
+            disabled={isAdding}
+            onClick={() => handleAddToCart(product)}
             variant="outline"
             size="icon"
             className={cn(

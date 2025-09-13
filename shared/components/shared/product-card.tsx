@@ -27,7 +27,6 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                 className
             )}
         >
-            {/* Блок зображення */}
             <div className="relative h-48 w-full bg-gray-100">
                 <Link href={`/product/${id}`}>
                     <Image
@@ -46,21 +45,11 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                 )}
             </div>
 
-            {/* Блок контенту: `flex-1` та `flex-col` дозволяють цьому блоку
-                зайняти весь доступний простір, що залишився, і розташувати
-                свої дочірні елементи вертикально. */}
             <div className="flex flex-1 flex-col p-4">
-                {/* Назва товару.
-                    `flex-grow` змушує цей блок рости, відштовхуючи рейтинг і футер вниз.
-                    Це гарантує, що футери всіх карток будуть на одній лінії. */}
                 <div className="flex-grow">
                     <h3 className="mb-2 text-base font-semibold text-gray-800">
                         <Link
                             href={`/product/${id}`}
-                            // ЗАСТОСОВУЄМО ОБМЕЖЕННЯ КІЛЬКОСТІ РЯДКІВ
-                            // `line-clamp-2` обріже текст до двох рядків, додавши "..." в кінці.
-                            // Для цього потрібен плагін `@tailwindcss/line-clamp`.
-                            // Якщо ви хочете обрізати до одного рядка, використовуйте клас `truncate`.
                             className="text-wrap hover:text-rozetka-green hover:underline"
                         >
                             {name}
@@ -68,7 +57,6 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                     </h3>
                 </div>
 
-                {/* Рейтинг */}
                 <div className="mb-4 flex items-center gap-1">
                     {[...Array(5)].map((_, i) => (
                         <Star
@@ -86,8 +74,6 @@ export const ProductCard: React.FC<ProductCardProps> = ({
                     </span>
                 </div>
 
-                {/* Футер картки: `mt-auto` тут вже не потрібен, оскільки `flex-grow`
-                    на блоці з назвою виконує цю роботу ефективніше. */}
                 <div className="flex items-center justify-between">
                     <p className="text-xl font-bold text-green-500">
                         {parseFloat(price).toLocaleString('uk-UA')} грн

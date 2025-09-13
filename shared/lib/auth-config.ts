@@ -1,14 +1,18 @@
-import { db } from './db';
+// shared/lib/auth-config.ts
+import NextAuth from 'next-auth';
 import { PrismaAdapter } from '@auth/prisma-adapter';
-import { NextAuthOptions } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 import CredentialsProvider from 'next-auth/providers/credentials';
+import { db } from './db';
 import bcrypt from 'bcryptjs';
-import NextAuth from 'next-auth'; // <-- Додай цей імпорт
-import { Adapter } from 'next-auth/adapters';
 
-const authOptions: NextAuthOptions = {
-    adapter: PrismaAdapter(db) as Adapter,
+export const {
+    handlers: { GET, POST },
+    auth,
+    signIn,
+    signOut,
+} = NextAuth({
+    adapter: PrismaAdapter(db),
     providers: [
         GoogleProvider({
             clientId: process.env.GOOGLE_CLIENT_ID!,
@@ -26,7 +30,7 @@ const authOptions: NextAuthOptions = {
                 }
 
                 const user = await db.user.findUnique({
-                    where: { email: credentials.email },
+                    where: { email: credentials.email as string },
                 });
 
                 if (!user || !user.password) {
@@ -34,14 +38,13 @@ const authOptions: NextAuthOptions = {
                 }
 
                 const isCorrectPassword = await bcrypt.compare(
-                    credentials.password,
+                    credentials.password as string,
                     user.password
                 );
 
                 if (!isCorrectPassword) {
                     throw new Error('Invalid credentials');
                 }
-
                 return user;
             },
         }),
@@ -59,19 +62,22 @@ const authOptions: NextAuthOptions = {
         },
         async jwt({ token, user }) {
             if (user) {
-                token.id = user.id;
+                token.id = user.id as string;
                 token.role = user.role;
+                return token;
+            }
+
+            if (!token.role) {
+                const dbUser = await db.user.findUnique({
+                    where: { id: token.id as string },
+                });
+                if (dbUser) {
+                    token.role = dbUser.role;
+                }
             }
             return token;
         },
     },
-    secret: process.env.NEXTAUTH_SECRET,
+    secret: process.env.AUTH_SECRET,
     debug: process.env.NODE_ENV === 'development',
-};
-
-export const {
-    handlers: { GET, POST },
-    auth,
-    signIn,
-    signOut,
-} = NextAuth(authOptions);
+});

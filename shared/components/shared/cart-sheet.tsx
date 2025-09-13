@@ -2,7 +2,6 @@
 import React from 'react';
 import { Button, Sheet } from '../ui';
 import {
-    SheetClose,
     SheetContent,
     SheetDescription,
     SheetFooter,
@@ -13,22 +12,24 @@ import {
 import { BoxIcon, ShoppingCart } from 'lucide-react';
 import { useCartStore } from '@/shared/store/cart-store';
 import { CARTitem } from './cart-item';
-
-interface Props {}
+import { useCartActions } from '@/shared/hooks/use-cart-actions';
 
 const selectItems = (state: ReturnType<typeof useCartStore.getState>) =>
     state.items;
-const selectClearCart = (state: ReturnType<typeof useCartStore.getState>) =>
-    state.clearCart;
 
-export const CartSheet: React.FC<Props> = ({}) => {
+const selectIsLoading = (state: ReturnType<typeof useCartStore.getState>) =>
+    state.isLoading;
+
+export const CartSheet: React.FC<[]> = ({}) => {
     const items = useCartStore(selectItems);
-    const clearCart = useCartStore(selectClearCart);
-
+    const isLoading = useCartStore(selectIsLoading);
+    const { handleClearCart, handleDeleteCartItem, handleUpdateQuantity } =
+        useCartActions();
     const totalPrice = items.reduce((sum, item) => {
         const itemCost = parseFloat(item.product.price) * item.quantity;
         return sum + itemCost;
     }, 0);
+
     return (
         <Sheet>
             <SheetTrigger className="relative rounded-md p-2 text-white hover:bg-gray-500">
@@ -58,10 +59,20 @@ export const CartSheet: React.FC<Props> = ({}) => {
                         <ul className="flex flex-col gap-4 first:mt-5">
                             {items.map((item) => (
                                 <li
-                                    key={item.product.id}
+                                    key={item.cartItemId}
                                     className="border-2 border-gray-200 p-2"
                                 >
-                                    <CARTitem item={item} />
+                                    <CARTitem
+                                        handleDeleteCartItem={
+                                            handleDeleteCartItem
+                                        }
+                                        handleUpdateQuantity={
+                                            handleUpdateQuantity
+                                        }
+                                        isLoading={isLoading}
+                                        item={item}
+                                        cartItemId={item.cartItemId}
+                                    />
                                 </li>
                             ))}
                         </ul>
@@ -75,7 +86,11 @@ export const CartSheet: React.FC<Props> = ({}) => {
                                 <span>Total:</span>
                                 <span>{totalPrice.toFixed(2)} грн</span>
                             </div>
-                            <Button onClick={clearCart} variant="destructive">
+                            <Button
+                                disabled={isLoading}
+                                onClick={handleClearCart}
+                                variant="destructive"
+                            >
                                 Clear the cart
                             </Button>
                         </div>
