@@ -6,3 +6,4 @@ export { getProductsByCategoryId } from './products-by-category-id';
 export { getCategoryPageData } from './category-by-slug';
 export { createProduct } from './create-products';
 export { registerUser } from './auth';
+export { getUserByEmail } from './user-by-email';
