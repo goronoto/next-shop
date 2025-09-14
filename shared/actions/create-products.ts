@@ -24,6 +24,7 @@ export const createProduct = async (
                 categoryId: data.categoryId,
             },
         });
+
         console.log('Product created successfully:', newProduct);
         return newProduct;
     } catch (error) {

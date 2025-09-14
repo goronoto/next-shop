@@ -19,6 +19,7 @@ export const getProductsByCategoryId = async (
 
         const safeProducts: SafeProduct[] = products.map((product) => ({
             ...product,
+            description: product.description?.toString() || '',
             price: product.price.toString(),
             createdAt: product.createdAt.toISOString(),
             updatedAt: product.updatedAt.toISOString(),

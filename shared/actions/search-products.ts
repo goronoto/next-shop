@@ -17,7 +17,16 @@ export const searchProducts = async (
             },
             take: option?.take,
         });
-        return products;
+
+        const safeProduct = products.map((product) => ({
+            ...product,
+            description: product.description?.toString(),
+            createdAt: product.createdAt.toISOString(),
+            updatedAt: product.updatedAt.toISOString(),
+            price: product.price.toString(),
+        }));
+
+        return safeProduct;
     } catch (error) {
         console.log('Failed to get searched products', error);
         return [];

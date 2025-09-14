@@ -17,6 +17,7 @@ export const getProducts = async () => {
             price: product.price.toString(),
             createdAt: product.createdAt.toISOString(),
             updatedAt: product.updatedAt.toISOString(),
+            description: product.description?.toString() || '',
         }));
 
         return safeProducts;
