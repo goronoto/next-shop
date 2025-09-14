@@ -14,10 +14,14 @@ export default auth((req) => {
     const isLoggedIn = !!req.auth;
 
     const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
-
-    const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
-
     const isAuthRoute = authRoutes.includes(nextUrl.pathname);
+
+    const isPublicRoute =
+        publicRoutes.includes(nextUrl.pathname) ||
+        nextUrl.pathname.startsWith('/product/') ||
+        nextUrl.pathname.startsWith('/category/') ||
+        nextUrl.pathname.startsWith('/search');
+    // --------------------------------------------------------
 
     if (isApiAuthRoute) {
         return;
@@ -32,11 +36,6 @@ export default auth((req) => {
 
     if (!isLoggedIn && !isPublicRoute) {
         return Response.redirect(new URL('/login', nextUrl));
-    }
-
-    const isAdminRoute = nextUrl.pathname.startsWith('/admin');
-    if (isAdminRoute && req.auth?.user?.role !== 'ADMIN') {
-        return Response.redirect(new URL('/', nextUrl));
     }
 
     return;

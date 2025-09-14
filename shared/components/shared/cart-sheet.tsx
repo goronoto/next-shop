@@ -20,7 +20,7 @@ const selectItems = (state: ReturnType<typeof useCartStore.getState>) =>
 const selectIsLoading = (state: ReturnType<typeof useCartStore.getState>) =>
     state.isLoading;
 
-export const CartSheet: React.FC<[]> = ({}) => {
+export const CartSheet: React.FC<{}> = () => {
     const items = useCartStore(selectItems);
     const isLoading = useCartStore(selectIsLoading);
     const { handleClearCart, handleDeleteCartItem, handleUpdateQuantity } =
